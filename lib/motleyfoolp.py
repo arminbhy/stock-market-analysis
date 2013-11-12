@@ -12,7 +12,7 @@ class Event:
         self.data = None
 
     def get_data(self):
-        if self.data != None:
+        if self.data is not None:
             return self.data
 
         req = urllib2.Request('http://www.motleyfoolp.idmanagedsolutions.com/stocks/events/symbol/' + self.symbol)
