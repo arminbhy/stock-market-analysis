@@ -1,0 +1,6 @@
+nose
+sphinx
+pandas
+html.py
+pyquery
+numpy
