@@ -1,3 +1,4 @@
 import stocks
 
-print stocks.Ticker('MSFT').get_close_prices()
+for i in stocks.GFinance('msft').get_events():
+    print i
