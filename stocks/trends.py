@@ -2,13 +2,18 @@
 
 import numpy as np
 
-def moving_average(x, n, type='simple'):
+def make_float(values):
+    ret_values = []
+    for v in values:
+        ret_values.append(float(v))
+    return ret_values
+
+def raw_moving_average(x,n, type='simple'):
     """
     compute an n period moving average.
-
     type is 'simple' | 'exponential'
-
     """
+
     x = np.asarray(x)
     if type=='simple':
         weights = np.ones(n)
@@ -21,6 +26,12 @@ def moving_average(x, n, type='simple'):
     a =  np.convolve(x, weights, mode='full')[:len(x)]
     a[:n] = a[n]
     return a
+
+def moving_average(x, n, type='simple'):
+    try:
+        return make_float(raw_moving_average(x, n, type))
+    except:
+        return None
 
 def relative_strength(prices, n=14):
     """
@@ -53,13 +64,33 @@ def relative_strength(prices, n=14):
         rs = up/down
         rsi[i] = 100. - 100./(1.+rs)
 
-    return rsi
+    return make_float(rsi)
 
 def moving_average_convergence(x, nslow=26, nfast=12):
     """
     compute the MACD (Moving Average Convergence/Divergence) using a fast and slow exponential moving avg'
     return value is emaslow, emafast, macd which are len(x) arrays
     """
-    emaslow = moving_average(x, nslow, type='exponential')
-    emafast = moving_average(x, nfast, type='exponential')
-    return emaslow, emafast, emafast - emaslow
+    try:
+        emaslow = raw_moving_average(x, nslow, type='exponential')
+        emafast = raw_moving_average(x, nfast, type='exponential')
+        macd = emafast - emaslow
+        signal = raw_moving_average(macd, 9, type='exponential')
+        return {
+            '26EMA' : make_float(emaslow), 
+            '12EMA' : make_float(emafast), 
+            'MACD' : make_float(macd), 
+            'Signal' : make_float(signal), 
+            'Histogram' : make_float(macd - signal)
+        }
+    except:
+        return None
+
+def averages(x):
+    return {
+        '5d' : moving_average(x, 5),
+        '10d' : moving_average(x, 10),
+        '50d' : moving_average(x, 50),
+        '200d' : moving_average(x, 200),
+        'convergence' : moving_average_convergence(x)
+    }

@@ -1,5 +1,13 @@
-import stocks
+from stocks import PreDefinedSymbols
+from stocks import Ticker
 
-print stocks.Symbols('all').get_symbols()
-for i in stocks.GFinance('msft').get_events():
-    print i
+t = Ticker('twtr')
+print t.as_dict()
+print t.get_gfinance().get_description()
+
+#print t.get_moving_average_convergence()['trigger']
+#t.save_to_file('data')
+
+#t2 = Ticker('msft')
+#t2.load_from_file('data')
+#print t2.quote
