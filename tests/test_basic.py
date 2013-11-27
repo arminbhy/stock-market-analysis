@@ -7,7 +7,6 @@ import stocks
 # make sure all the required librarires can be imported
 import pandas.io.data
 import pyquery
-import HTML
 import email.mime.multipart
 import email.mime.text
 import numpy
