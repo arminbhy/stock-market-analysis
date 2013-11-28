@@ -1,5 +1,7 @@
 import sys
 import os
+from ticker import Ticker
+from time import sleep
 
 class Symbols:
     'Class for extracting symbols from a file'
@@ -7,8 +9,17 @@ class Symbols:
     def __init__(self, group):
         self.group = group
         self.symbols = []
+        self.tickers = None
         for l in open('symbols/' + group, 'r'):
             self.symbols.append(l.strip())
+
+    def get_tickers(self):
+        if self.tickers is None:
+            tickers = []
+            for sym in self.symbols:
+                tickers.append(Ticker(sym))
+            self.tickers = tickers
+        return self.tickers
 
     def get_symbols(self):
         return self.symbols
@@ -25,6 +36,11 @@ class Symbols:
             if sym not in self.symbols:
                 self.symbols.append(sym)
         return self
+
+    def update(self, dir_name='data', delay=0.5):
+        for sym in self.get_symbols():
+            Ticker(sym).save_to_file(dir_name)
+            sleep(delay)
 
 class PreDefinedSymbols:
     all = Symbols('all')
