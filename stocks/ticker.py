@@ -4,7 +4,10 @@ import ystockquote
 import trends
 import gfinance
 import json
+from helper import Helper
+from helper import RSIHelper
 from pandas.io.data import get_data_yahoo
+import os
 
 class Ticker:
     'Class for everything related to ticker'
@@ -20,6 +23,17 @@ class Ticker:
 
     def get_symbol(self):
         return self.symbol
+
+    def get_stockchart(self):
+        return "http://stockcharts.com" + os.popen(
+            'curl -H "Connection: keep-alive" '+
+            '-H "Cache-Control: max-age=0" '+
+            '-H "Accept: text/html;q=0.9,image/webp,*/*;q=0.8" '+
+            '-H "User-Agent: Chrome/31.0.1650.57" '+
+            '-H "Accept-Encoding: text/html" '+
+            '-H "Accept-Language: en-US,en;q=0.8" '+
+            'http://stockcharts.com/h-sc/ui?s=' + self.symbol + ' | '+
+            'grep id=\\\"chartImg\\\"').read().split("src=\"")[1].split("\" />")[0].strip()
 
     def get_gfinance(self):
         if self.gfinance is None:
@@ -60,6 +74,9 @@ class Ticker:
                 self.close_prices = None
         return self.close_prices
 
+    def get_close_price_helper(self):
+        return Helper(self.get_close_prices())
+
     def get_averages(self):
         if self.averages is None:
             try:
@@ -68,6 +85,9 @@ class Ticker:
                 self.averages = None
         return self.averages
 
+    def get_signal_helper(self):
+        return Helper(self.get_averages()['convergence']['Histogram'])
+
     def get_rsi(self):
         if self.rsi is None:
             try:
@@ -75,6 +95,9 @@ class Ticker:
             except:
                 self.rsi = None
         return self.rsi
+
+    def get_rsi_helper(self):
+        return RSIHelper(self.get_rsi())
 
     def get_last_rsi(self, n=1):
         rsi = self.get_rsi()
