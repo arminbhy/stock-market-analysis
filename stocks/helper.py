@@ -56,3 +56,4 @@ class RSIHelper(Helper):
         if v < 30:
             return 'Over-Sold'
         return 'NA'
+

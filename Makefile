@@ -8,6 +8,9 @@ update:
 	mkdir -p symbols
 	sh update.sh
 
+filter:
+	python main.py filter
+
 get-data:
 	rm -rf data
 	mkdir -p data
@@ -24,8 +27,9 @@ main:
 dev:
 	python main.py dev
 
-filter:
-	python main.py filter
+reset:
+	rm symbols/ignore
+	touch symbols/ignore
 
 clean:
 	find . -name '*.pyc' | xargs rm

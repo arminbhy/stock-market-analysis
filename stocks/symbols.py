@@ -21,6 +21,26 @@ class Symbols:
             self.tickers = tickers
         return self.tickers
 
+    def get_loaded_tickers(self, dir_name='data'):
+        tickers = self.get_tickers()
+        loaded_tickers = []
+        for t in tickers:
+            try:
+                t.load_from_file(dir_name)
+                loaded_tickers.append(t)
+            except:
+                pass
+        return loaded_tickers
+
+    def append(self, tickers):
+        f = open('symbols/' + self.group, 'a')
+        for t in tickers:
+            if t not in self.symbols:
+                f.write(t + '\n')
+                self.symbols.append(t)
+        f.close()
+
+
     def get_symbols(self):
         return self.symbols
 

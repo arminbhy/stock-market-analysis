@@ -6,3 +6,5 @@ cat symbols/own.ignore > symbols/own
 cat symbols/watch.ignore > symbols/watch
 wc -l symbols/all
 wc -l symbols/ignore
+rm symbols/nasdaq
+rm symbols/other
