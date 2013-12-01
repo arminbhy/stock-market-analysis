@@ -8,12 +8,12 @@ update:
 	mkdir -p symbols
 	sh update.sh
 
-data:
+get-data:
 	rm -rf data
 	mkdir -p data
 	python main.py update
 
-archive:
+do-archive:
 	mkdir -p archive
 	tar -zcvf archive/`date +"%Y-%m-%d"`.tar.gz data/
 
@@ -23,6 +23,9 @@ main:
 
 dev:
 	python main.py dev
+
+filter:
+	python main.py filter
 
 clean:
 	find . -name '*.pyc' | xargs rm

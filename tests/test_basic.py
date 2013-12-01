@@ -10,7 +10,7 @@ import pyquery
 import email.mime.multipart
 import email.mime.text
 import numpy
-
+import pystache
 
 class BasicTestSuite(unittest.TestCase):
     """Basic test cases."""

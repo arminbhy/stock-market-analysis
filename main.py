@@ -9,6 +9,9 @@ if __name__ == "__main__":
         if sys.argv[1] == 'main':
             print 'main'
 
+        if sys.argv[1] == 'filter':
+            print 'filter'
+
         if sys.argv[1] == 'update':
             PreDefinedSymbols.relevant.update()
 

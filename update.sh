@@ -4,3 +4,5 @@ curl ftp://ftp.nasdaqtrader.com/SymbolDirectory/otherlisted.txt | grep -v "ACT S
 cat symbols/nasdaq symbols/other | sort -u > symbols/all
 cat symbols/own.ignore > symbols/own
 cat symbols/watch.ignore > symbols/watch
+wc -l symbols/all
+wc -l symbols/ignore

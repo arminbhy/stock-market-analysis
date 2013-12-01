@@ -3,3 +3,4 @@ sphinx
 pandas
 pyquery
 numpy
+pystache
