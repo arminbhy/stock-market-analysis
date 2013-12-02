@@ -25,6 +25,14 @@ def filter(argv):
     print 'Adding ', len(ignore), 'Symbols to ignore list'
     PreDefinedSymbols.ignore.append(ignore)
 
+# ----------------------------------OWN---------------------------------------
+def own(argv):
+    html = '<BR><h1>Own</h1><BR>'
+    for t in PreDefinedSymbols.own.get_loaded_tickers():
+        print t.get_symbol()
+        html += t.as_html()
+    mailer.send('Stock Report ' + str(datetime.datetime.now()), html)
+
 # ----------------------------------MAIN--------------------------------------
 def main(argv):
 
