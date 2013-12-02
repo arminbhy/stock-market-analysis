@@ -12,6 +12,10 @@ import datetime
 def update(argv):
     PreDefinedSymbols.relevant.update()
 
+# ----------------------------------UPDATE-------------------------------------
+def update_owned(argv):
+    PreDefinedSymbols.own.update()
+
 # ----------------------------------FILTER-------------------------------------
 def filter(argv):
     tickers = PreDefinedSymbols.relevant.get_loaded_tickers()

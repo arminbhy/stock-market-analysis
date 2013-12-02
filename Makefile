@@ -30,6 +30,10 @@ dev:
 own:
 	python main.py own
 
+update_owned:
+	mkdir -p data
+	python main.py update_owned
+
 reset:
 	rm symbols/ignore
 	touch symbols/ignore
