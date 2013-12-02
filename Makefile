@@ -27,6 +27,9 @@ main:
 dev:
 	python main.py dev
 
+own:
+	python main.py own
+
 reset:
 	rm symbols/ignore
 	touch symbols/ignore
