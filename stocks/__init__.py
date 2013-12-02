@@ -6,5 +6,7 @@ from .helper import Helper
 from .filters import Filter
 from .filters import VolumeFilter
 from .filters import MarketCapitalFilter
+from .filters import PotentialFilter
+import mailer
 import trends
 import ystockquote

@@ -4,6 +4,7 @@ import urllib2
 import urllib
 from pyquery import PyQuery
 import time
+from datetime import date, timedelta
 
 class GFinance:
     'Class for extracting google finance information'
@@ -23,7 +24,10 @@ class GFinance:
 
     def get_description(self):
         if self.desc is None:
-            self.desc = PyQuery(self.get_html()).find('.companySummary').text()
+            try:
+                self.desc = PyQuery(self.get_html()).find('.companySummary').text().encode('ascii', 'ignore')
+            except:
+                self.desc = ""
         return self.desc
 
     def get_events(self):
@@ -38,3 +42,13 @@ class GFinance:
                     ])
             self.events = result
         return self.events
+
+    def get_events_str(self):
+        events = []
+        d=date.today()-timedelta(days=7)
+        for e in self.get_events():
+            if e[0] > d.timetuple():
+                events.append({
+                    'time' : time.strftime("%Y-%m-%d", e[0]),
+                    'event' : e[1].encode('ascii', 'ignore')})
+        return events

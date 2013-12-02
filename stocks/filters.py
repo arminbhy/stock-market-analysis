@@ -46,3 +46,19 @@ class MarketCapitalFilter(Filter):
             if strCapToCap(t.get_quote()['market_cap']) < strCapToCap(_min):
                 excluded.append(t)
         return excluded
+
+# TODO Something more meaningful :)
+class PotentialFilter(Filter):
+    def filter(self):
+        tickers = []
+        for t in self.tickers:
+            try:
+                if t.get_calculated_pe() < 100:
+                    rsi = t.get_rsi_helper()
+                    signal = t.get_signal_helper()
+                    if rsi.last_value() < 35:
+                        if signal.last_value() > 0 and signal.direction() > 0:
+                            tickers.append(t)
+            except:
+                pass
+        return tickers

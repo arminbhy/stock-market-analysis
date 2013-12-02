@@ -2,14 +2,17 @@ from stocks import PreDefinedSymbols
 from stocks import Ticker
 from stocks import VolumeFilter
 from stocks import MarketCapitalFilter
+from stocks import PotentialFilter
 from time import sleep
 import sys
+from stocks import mailer
+import datetime
 
+# ----------------------------------UPDATE-------------------------------------
 def update(argv):
     PreDefinedSymbols.relevant.update()
 
-
-
+# ----------------------------------FILTER-------------------------------------
 def filter(argv):
     tickers = PreDefinedSymbols.relevant.get_loaded_tickers()
     ignore = []
@@ -22,29 +25,33 @@ def filter(argv):
     print 'Adding ', len(ignore), 'Symbols to ignore list'
     PreDefinedSymbols.ignore.append(ignore)
 
-
-
+# ----------------------------------MAIN--------------------------------------
 def main(argv):
-    PreDefinedSymbols.relevant.get_loaded_tickers()
-    print 'main'
 
+    html = '<BR><h1>Own</h1><BR>'
+    for t in PreDefinedSymbols.own.get_loaded_tickers():
+        print t.get_symbol()
+        html += t.as_html()
 
+    html += '<BR><h1>Watch</h1><BR>'
+    for t in PreDefinedSymbols.watch.get_loaded_tickers():
+        print t.get_symbol()
+        html += t.as_html()
 
+    html += '<BR><h1>Potentials</h1><BR>'
+    for t in PotentialFilter(PreDefinedSymbols.relevant.get_loaded_tickers()).filter():
+        print t.get_symbol()
+        html += t.as_html()
+
+    mailer.send('Stock Report ' + str(datetime.datetime.now()), html)
+
+# -----------------------------------DEV--------------------------------------
 def dev(argv):
-    h = Ticker('OGE').get_rsi_helper()
-    print 'min', h.min()
-    print 'days_since_min', h.days_since_min()
-    print 'max', h.max()
-    print 'days_since_max', h.days_since_max()
-    print 'direction', h.direction()
-    print 'direction_since_max_or_min', h.direction_since_max_or_min()
-    try:
-        print 'status', h.status()
-    except:
-        print 'status', 'No Status'
+    for t in PotentialFilter(PreDefinedSymbols.relevant.get_loaded_tickers()).filter():
+        print t.get_symbol()
 
 
-
+# -------------------------------------------------------------------------
 if __name__ == "__main__":
     if len(sys.argv) >= 2:
         globals()[sys.argv[1]](sys.argv)
