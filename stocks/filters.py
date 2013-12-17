@@ -53,12 +53,22 @@ class PotentialFilter(Filter):
         tickers = []
         for t in self.tickers:
             try:
-                if t.get_calculated_pe() < 100:
+                if t.get_calculated_pe() < 25:
+                    rsi = t.get_rsi_helper()
+                    if rsi.last_value() < 30:
+                        tickers.append(t)
+                        continue
+                    if rsi.max() > 70 and rsi.min() < 30 and ris.last_value() < 35:
+                        tickers.append(t)
+                        continue
+
+                if t.get_calculated_pe() < 50:
                     rsi = t.get_rsi_helper()
                     signal = t.get_signal_helper()
-                    if rsi.last_value() < 35:
+                    if rsi.last_value() < 30:
                         if signal.last_value() > 0 and signal.direction() > 0:
                             tickers.append(t)
+                            continue
             except:
                 pass
         return tickers

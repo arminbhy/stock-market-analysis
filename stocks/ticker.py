@@ -94,7 +94,10 @@ class Ticker:
         return self.averages
 
     def get_signal_helper(self):
-        return Helper(self.get_averages()['convergence']['Histogram'])
+        try:
+            return Helper(self.get_averages()['convergence']['Histogram'])
+        except:
+            return Helper([0])
 
     def get_rsi(self):
         if self.rsi is None:
